@@ -1,0 +1,197 @@
+<div class="page-header mt-2 pb-4 mx-lg-n2 border-0 justify-content-start flex-wrap flex-md-nowrap">
+    <h1 class="text-dark-m3 pb-0 mb-3 mb-md-0 text-130">
+        {{title}}
+    </h1>
+
+    <div class="ml-2 d-none d-xl-inline-block">
+        <div class="dropdown dropdown-hover">
+            <a data-display="static" href="#" class="mt-1 btn dropdown-toggle text-600 text-90 border-0 btn-outline-default py-1 px-2 btn-h-light-primary btn-a-light-primary radius-1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                ( Click For Settings <i class="fa fa-cog text-110"></i> )
+            </a>
+
+            <form autocomplete="off" style="width: 18rem; max-width: 90vw;" class="dropdown-menu shadow radius-1 pt-3 mr-lg-n2 dropdown-caret">
+                <h3 class="pl-3 text-125 text-orange-d2 mb-1">
+                    Menu Options
+                </h3>
+
+                <div class="p-1 dropdown-clickable list-group">
+                    <label class="list-group-item px-3 py-2 mb-0 bgc-h-default-l3 border-0">
+                        <input type="checkbox" id="id-full-width" class="mr-1 align-sub" checked />
+                        Full Width
+                    </label>
+
+                    <label class="list-group-item px-3 py-2 mb-0 bgc-h-default-l3 border-0">
+                        <input type="checkbox" id="id-flip-highlight" class="mr-1 align-sub" />
+                        Flip Highlight Border
+                    </label>
+
+                    <label class="list-group-item px-3 py-2 mb-0 bgc-h-default-l3 border-0">
+                        <input type="checkbox" id="id-sm-highlight" class="mr-1 align-sub" checked />
+                        Smaller Highlight Border
+                    </label>
+                </div>
+            </form>
+        </div><!-- /.dropdown -->
+    </div>
+
+
+    <div class="ml-auto d-flex">
+        <div class="d-flex align-items-center px-lg-0">
+            <i class="fa fa-search text-blue mr-n3"></i>
+            <input type="text" class="form-control brc-blue-m1 brc-on-focus border-none border-b-2 radius-0 shadow-none bgc-transparent pl-35 mr-1" placeholder="Search ..." />
+        </div>
+
+        <div class="text-right">
+            <button class="btn btn-outline-secondary btn-bold radius-1 pl-0 py-0 text-nowrap">
+                <span class="d-inline-block bgc-secondary-m3 shadow-sm h-4 px-2 pt-1 mr-15">
+                    <i class="fa fa-clipboard-check text-dark-tp5 text-110 mt-3px"></i>
+                </span>
+                <span>
+                    <span class="d-none d-sm-inline">View </span>Report
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row" id="infobox-row">
+ {{> page/infobox}}
+</div>
+
+
+
+
+<div class="row mt-45">
+    <div class="col-lg-7 col-12 pl-lg-0 pr-lg-2">
+        <!-- we could use '.card' here as well -->
+        <div class="bcard radius-2 h-100 d-flex flex-column py-35 px-2 px-lg-4">
+            <div class="d-flex mb-4">
+                <h4 class="text-secondary-d1 text-120 ml-1">
+                    Quick Stats
+                </h4>
+
+                <div class="ml-auto d-flex align-items-center">
+                    <div class="dropdown dd-backdrop dd-backdrop-none-md">
+                        <a class="btn btn-light-blue btn-bgc-white btn-bold radius-2 px-3 btn-xs dropdown-toggle" href="#" role="button" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                            This Week
+                        </a>
+
+                        <div class="dropdown-menu shadow-sm dropdown-menu-right dropdown-caret dropdown-animated dd-slide-up dd-slide-none-md radius-1 brc-secondary-l1">
+                         <div class="dropdown-inner">
+                            <a class="dropdown-item active btn btn-a-lighter-primary btn-a-bold mx-1" href="#">This Week</a>
+                            <a class="dropdown-item btn btn-a-lighter-primary text-secondary mx-1" href="#">Last Week</a>
+                            <a class="dropdown-item btn btn-a-lighter-primary text-secondary mx-1" href="#">This Month</a>
+                            <a class="dropdown-item btn btn-a-lighter-primary text-secondary mx-1" href="#">Last Month</a>
+                         </div>
+                        </div>
+                    </div>
+
+                    <div class="ml-1">
+                        <a class="btn btn-outline-secondary btn-brc-tp btn-bold radius-round btn-xs dropdown-toggle" href="#">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row mb-3 mx-1 px-1">
+                <div class="col-12 col-sm-4 px-0 d-flex justify-content-between d-sm-block">
+                    <span class="text-grey-m1 ml-1">
+                        revenue
+                    </span>
+
+                    <span class="text-success ml-2 mt-2 text-600 text-95 order-last">+4% <i class="fas fa-caret-up"></i></span>
+
+                    <div class="d-sm-block flex-grow-1 text-right text-sm-left">
+                        <span class="text-130 opacity-2">$</span>
+                        <span class="text-secondary-d3 text-160">
+                            46,220
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 px-0 d-flex justify-content-between d-sm-block">
+                    <span class="text-grey-m1 ml-1">
+                        expense
+                    </span>
+
+                    <span class="text-orange ml-2 mt-2 text-600 text-95 order-last">+1% <i class="fas fa-caret-down"></i></span>
+
+                    <div class="d-sm-block flex-grow-1 text-right text-sm-left">
+                        <span class="text-130 opacity-2">$</span>
+                        <span class="text-secondary-d3 text-160">
+                            3,500
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 px-0 d-flex justify-content-between d-sm-block">
+                    <span class="text-grey-m1 ml-1">
+                        customers
+                    </span>
+
+                    <span class="text-success ml-2 mt-2 text-600 text-95 order-last">+5% <i class="fas fa-caret-up"></i></span>
+
+                    <div class="d-sm-block flex-grow-1 text-right text-sm-left">
+                        <span class="text-secondary-d3 text-160">
+                            315
+                        </span>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+
+            <div>
+                <canvas id="quickstats-chart" height="120" class="mt-lg-4"></canvas>
+            </div>
+        </div>
+    </div><!-- /.col -->
+
+
+
+    <div class="col-lg-5 col-12 pr-lg-0 mt-3 mt-lg-0">
+        <div class="bgc-white shadow-sm radius-2 pt-35 px-0 px-lg-4">
+            <div class="d-flex mb-2">
+                <h4 class="text-secondary-d1 text-120 px-3 px-lg-0">
+                    Task Overview
+                </h4>
+
+                <div class="ml-auto d-flex align-items-center">
+                    <a class="btn btn-light-secondary btn-bgc-white btn-bold radius-2 px-3 btn-xs text-nowrap" href="#">
+                        See All
+                    </a>
+
+                    <div class="ml-1 mr-2">
+                        <a class="btn btn-outline-secondary btn-brc-tp btn-bold radius-round btn-xs dropdown-toggle" href="#">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0">
+                <div class="card-body px-0 px-sm-1 px-lg-0 border-t-1 brc-default-l3 table-responsive-sm">
+                    {{> page/tasks}}
+                </div>
+            </div>
+        </div>
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+
+
+
+<div class="row mt-4 mt-lg-5">
+    <div class="col-12 px-lg-0">
+        <h4 class="text-dark-m3 pb-0 mb-3 text-140 pl-2">
+            Calendar and Events
+        </h4>
+
+        <div class="bgc-white shadow-sm p-3 p-lg-4 radius-2">            
+            <div id='calendar' class="text-dark-l1"></div>
+        </div>
+    </div>
+</div>

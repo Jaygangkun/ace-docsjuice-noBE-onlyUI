@@ -1,0 +1,29 @@
+{{#each (get "comments")}}
+ <div class="media mx-15">
+    <div class="d-flex flex-grow-1">
+        <div class="mr-3">
+            {{#if color}}
+            <span class="d-inlin-block w-6 h-6 text-center pt-2 radius-round bgc-{{color}} text-white font-bolder">
+                <span>{{avatar}}</span>
+            </span>
+            {{else}}
+             <img alt="{{name}}'s avatar" src="assets/image/avatar/{{avatar}}" class="radius-round border-2 p-1px brc-primary-m3 w-6 h-6" />
+            {{/if}}
+        </div>
+
+        <div class="media-body pb-2 border-b-1 brc-default-l2">
+            <div class="d-flex justify-content-between">
+                <span class="text-blue text-95">{{name}}</span>
+                <span class="text-90">
+                    <i class="far fa-clock text-grey mr-1"></i><span class="text-{{time-color}}-m2 font-bolder">{{time}}</span>
+                </span>
+            </div>
+            <div class="text-dark-m3 text-90">
+                <i class="fa fa-quote-left text-90 text-secondary-m1 mr-1"></i>
+                {{comment}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{/each}}

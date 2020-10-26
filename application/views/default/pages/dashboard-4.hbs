@@ -1,0 +1,340 @@
+<div class="page-header border-0">
+    <h1 class="page-title text-primary-d2 text-160">
+        {{title}}
+        <small class="page-info text-secondary-d3">
+            <i class="fa fa-angle-double-right text-80"></i>
+            overview &amp; stats
+        </small>
+    </h1>
+
+    <div class="page-tools d-flex align-items-end btn-group">
+        <button type="button" class="btn px-25 py-2 text-95 btn-text-purple btn-lighter-default btn-h-lighter-purple btn-a-lighter-purple border-b-2">
+            <i class="fa fa-save text-120"></i>
+        </button>
+        
+        <button type="button" class="btn px-25 py-2 text-95 btn-text-success btn-lighter-default btn-h-lighter-success btn-a-lighter-success border-b-2">
+            <i class="fa fa-undo text-110"></i>
+        </button>
+
+        <div class="btn-group dropdown dd-backdrop dd-backdrop-none-md">
+			<button type="button" class="btn px-25 py-2 text-95 btn-text-info btn-lighter-default btn-h-lighter-info btn-a-lighter-info dropdown-toggle border-b-2" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fa fa-search text-110"></i>
+			</button>
+			<div class="dropdown-menu dropdown-menu-right dropdown-caret dropdown-animated animated-2 dd-slide-up dd-slide-none-md">
+             <div class="dropdown-inner">
+				<a class="dropdown-item" href="#">Action</a>
+				<a class="dropdown-item" href="#">Another action</a>
+				<a class="dropdown-item" href="#">Something else here</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Separated link</a>
+			 </div>
+            </div>
+		</div>
+    </div>
+</div>
+
+
+
+
+<div class="px-2">
+    <div class="row">
+      {{#each (get "stats1")}}
+	    {{> page/infobox}}
+	  {{/each}}
+    </div>
+</div>
+
+
+<!-- dark infoboxes -->
+<div class="d-none px-2">
+    <div class="row">
+      {{#each (get "stats1")}}
+	    {{> page/infobox-colored}}
+	  {{/each}}
+    </div>
+</div>
+
+
+
+<hr class="mx-n3 mt-45 mb-0 brc-secondary-l2 opacity-2" />
+
+    
+<div class="px-3">
+ <div class="row">
+  <div class="col-12 col-lg-6 pb-25 pt-35">
+    <div class="row mx-n2 mx-lg-0 h-100">
+      <!-- title and header of revenue/expense chart -->
+      <div class="col-12 px-0">
+        <div class="d-flex mb-4">
+            <h4 class="d-inline-block flex-grow-1 mr-3 text-dark-m3 text-130">
+                Revenue
+                <span class="text-grey text-80">&amp;</span>
+                Expense
+            </h4>
+
+            <button class="align-self-center ml-auto btn btn-light-primary btn-bgc-white btn-text-primary btn-h-outline-primary btn-a-outline-primary p-1px btn-bold text-left text-nowrap">
+                <span class="d-inline-block bgc-blue-l2 h-4 px-25 pt-1 mr-2 border-1">
+					<i class="far fa-copy text-110 mt-3px"></i>
+				</span>
+                <span class="mr-3">
+                    View Report
+                </span>
+			</button>
+        </div>
+        
+        <div class="row mb-3 mx-0 px-3 pt-1 pb-15 radius-1 bgc-secondary-l3">
+            <div class="col-6 px-0">
+                <span class="text-120 opacity-1">$</span>
+                <span class="text-dark-tp4 text-160">
+                    524,965
+                </span>
+                <span class="text-dark-tp5 ml-1">revenue</span>
+                <span class="d-block d-sm-inline text-success ml-2 mt-2 text-600">(+9.75% <i class="fas fa-caret-up text-120"></i>)</span>
+            </div>
+            
+            <div class="col-6 px-0 text-right">
+                <span class="text-120 opacity-1">$</span>
+                <span class="text-dark-tp4 text-150">
+                    75,450
+                </span>
+                <span class="text-dark-tp5 ml-1">expense</span>
+                <span class="d-block d-sm-inline text-orange-d2 ml-2 mt-2 text-600 text-95">(+1.26% <i class="fas fa-caret-up text-120"></i>)</span>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-12 px-0 px-md-3">
+        <canvas class="mw-100 mt-3" id="revenue-expense-chart" height="130"></canvas>
+      </div>
+    </div><!-- /.row -->
+  </div><!-- /.col (revenue & expense) -->
+
+
+
+  <div class="col-12 col-lg-6 pt-35 pb-25 pos-rel">
+    <div class="d-none d-lg-block position-tl h-100 border-r-1 brc-secondary-l3"></div><!-- the border line between two columns (in desktop) -->
+    <div class="d-lg-none position-tl w-100 border-b-1 brc-secondary-l3"></div><!-- the border line between two rows (in mobile) -->
+
+    <!-- page views -->
+    <div class="px-0 px-lg-1 mx-n2 mx-lg-0 mb-2 pos-rel mt-4 mt-lg-0">
+        <div class="d-flex px-2 mb-425">
+            <h4 class="text-dark-m3 text-130 mb-25">
+                Pageviews
+                <span class="d-block d-sm-inline text-success text-sm">~ 30k today</span>
+            </h4>
+            <div class="ml-auto">
+                <form autocomplete="off" data-toggle="buttons" class="btn-group btn-group-toggle">
+                    <label class="btn btn-xs px-25 btn-outline-lightgrey btn-h-outline-blue btn-a-blue active">
+                        <input name="pageview" type="radio" value="1" checked />
+                        Day
+                    </label>
+
+                    <label class="btn btn-xs px-25 btn-outline-lightgrey btn-h-outline-blue btn-a-blue">
+                        <input name="pageview" type="radio" value="2" />
+                        Week
+                    </label>
+
+                    <label class="btn btn-xs px-25 btn-outline-lightgrey btn-h-outline-blue btn-a-blue">
+                        <input name="pageview" type="radio" value="3" />
+                        Month
+                    </label>
+                </form>
+            </div>
+        </div>
+
+        <canvas id="pageviewschart" style="height: 160px; width: 100%;"></canvas>
+    </div>
+
+
+    <div class="w-100 border-t-2 brc-secondary-l3 mt-1"></div> <!-- the 2px line separating pageviews chart and piecharts -->
+
+
+    <!-- Pie charts -->
+    <div class="row mt-35 pos-rel">
+        <div class="col-12 col-md-6 col-lg-7 py-25 px-lg-2 pos-rel">
+            <div class="mx-2 text-dark-l1 mb-2 text-right text-110">
+                <i class="fa fa-arrow-down rotate-45"></i>
+                Traffic Sources
+            </div>
+
+            <div class="d-flex flex-row-reverse">
+                <div class="pos-rel ml-1 align-self-start">
+                    <div class="position-center text-center text-dark-l1 mt-n1">
+                        <span>total</span>
+                        <span class="mt-n2 d-block text-180 text-dark-l2 text-600">174k</span>
+                    </div>
+                    <canvas id="piechart1" class="pos-rel" style="height: 150px; width: 150px; max-height: 150px; max-width: 150px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-md-6 col-lg-5 py-25 px-lg-2 pos-rel">
+            <div class="mx-2 text-dark-l1 mb-2 text-110">
+                User Devices
+                <i class="fa fa-arrow-down rotate-n45"></i>
+            </div>
+
+            <div class="d-flex">
+                <div class="pos-rel mr-3 mr-sm-2 align-self-start">
+                    <div class="position-center text-center text-dark-l1 mt-n1">
+                        <span>total</span>
+                        <span class="mt-n2 d-block text-180 text-dark-l2 text-600">98k</span>
+                    </div>
+                    <canvas id="piechart2" class="pos-rel" style="height: 150px; width: 150px; max-height: 150px; max-width: 150px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
+  </div><!-- /.col (pageviews and piecharts) -->
+
+ </div><!-- /.row -->
+
+</div>
+
+
+<hr class="mx-n3 mt-0 brc-secondary-l opacity-2" />
+
+
+<div class="row mt-45">
+    <!-- task board -->
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 h-100">
+            <div class="card-header bg-transparent border-0 pl-0">
+                <h5 class="card-title mb-2 mb-md-0 text-dark-m3">
+                    <i class="far fa-calendar-check text-default mr-1 text-105"></i>
+                    Task Board
+                    <span class="text-80 text-grey-m1">(sortable)</span>
+                </h5>
+            </div>
+
+			<div class="card-body bg-white py-0 px-3 px-sm-0">
+                <div class="row">
+                    {{> page/tasks}}
+                </div>
+			</div><!-- /.card-body -->
+        </div>
+    </div>
+
+
+    <!-- chat -->
+    <div class="col-12 col-xl-4 mt-2 mt-xl-0">
+        <div class="card border-0 h-100">
+            <div class="card-header bg-transparent border-0 pl-0">
+                <h5 class="card-title mb-2 mb-md-0 text-dark-m3">
+                    <i class="far fa-comment-dots text-green-m1 mr-1 text-105"></i>
+                    Live Chat
+                </h5>
+            </div>
+
+            <div id="conversations" class="card-body border-1 border-b-0 brc-secondary-l1 radius-t-1 bgc-secondary-l3 p-0">
+                <div class="px-1px" data-ace-scroll='{"height": 390, "smooth":true, "color": "grey"}'>
+                 {{> page/conversation}}
+                </div>
+            </div>
+
+            <div class="card-footer p-0 bgc-white border-1 border-t-1 brc-secondary-l1 radius-b-1">      
+                <div class="p-3">
+                    <div class="input-group">
+                        <input type="text" class="shadow-none form-control form-control-lg  pl-1 text-105 border-0" placeholder="Type your message ..." />
+                        <div class="input-group-append">
+                            <button class="btn btn-white border-0 btn-sm radius-3px py-2 px-2 ml-2" type="button">
+                                <span class="fa-stack w-auto">
+                                    <i class="fas fa-circle text-dark fa-stack-1x text-140"></i>
+                                    <i class="fas fa-smile text-warning-m3 text-160 fa-stack-1x pos-rel"></i>
+                                </span>
+                            </button>
+                            <button class="btn btn-outline-info btn-sm radius-3px p-2 ml-2" type="button">
+                                <i class="fa fa-paper-plane text-150 w-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.card-footer -->
+        </div><!-- /.card -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+
+
+<hr class="mx-n3 mt-5 mb-0 brc-secondary-l2 opacity-2" />
+
+
+<div class="row">
+    <div class="col-lg-4 border-r-1 brc-secondary-l3">
+        <div class="card pt-2 border-0 h-100">
+            <div class="card-header bg-transparent border-0 brc-primary-l1 pl-1">
+                <h5 class="card-title text-primary-d2">
+                    Popular Pages
+                </h5>
+            </div>
+
+            <div class="card-body p-0 d-flex flex-column">
+                <div class="flex-grow-1 table-responsive-sm overflow-hidden">
+                    {{> page/pages}}
+                </div>
+                <div>
+                    <div class="my-25 mx-4 text-center">
+                        <button type="button" class="btn w-50 btn-sm btn-bold btn-lighter-purple border-1">
+                            More Pages
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-lg-none position-bl w-100 border-b-1 brc-secondary-l3"></div><!-- the border line between sections in mobile -->
+    </div>
+
+
+    <div class="col-lg-4 border-r-1 brc-secondary-l3">
+        <div class="card pt-2 border-0 h-100">
+            <div class="card-header mb-2 bg-transparent border-0 brc-primary-l1 pl-1">
+                <h5 class="card-title text-primary-d2">
+                    Activity Feed
+                </h5>
+            </div>
+
+            <div class="card-body p-0 d-flex flex-column">
+                <div class="flex-grow-1">
+                    {{> page/activity}}
+                </div>
+                <div>
+                    <div class="my-25 mx-4 text-center">
+                        <button type="button" class="btn w-50 btn-sm btn-bold btn-lighter-success border-1">
+                            All Activities
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-lg-none position-bl w-100 border-b-1 brc-secondary-l3"></div><!-- the border line between sections in mobile -->
+    </div>
+    
+
+    <div class="col-lg-4">
+        <div class="card pt-2 border-0 h-100">
+            <div class="card-header bg-transparent border-0 brc-primary-l1 pl-1">
+                <h5 class="card-title text-primary-d2">
+                    Latest Members
+                </h5>
+            </div>
+
+            <div class="card-body p-0 d-flex flex-column">
+                <div class="flex-grow-1">
+                    {{> page/members}}
+                </div>
+                <div>
+                    <div class="my-25 mx-4 text-center">
+                        <button type="button" class="btn w-50 btn-sm btn-bold btn-lighter-blue border-1">
+                            All Members
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+
+

@@ -1,0 +1,19 @@
+<table class="table table-borderless table-striped-light border-0">
+	<tbody>
+		{{#each (get "domains")}}
+		<tr>
+			<td class="text-dark-m1 px-1 px-xl-2">
+				<span class="d-inline-block w-1 h-1 p-15 radius-round bgc-{{color}} mr-1"></span>
+				{{name}}
+			</td>
+
+			<td class="px-0">
+				<span class="text-truncate d-inline-block col-9">
+					<a href="#" class="px-0 align-middle text-primary">{{url}}</a>
+				</span>
+				<a href="#" class="text-90 fa fa-external-link-alt text-secondary-d1 align-middle bgc-h-warning-l1 text-center p-1"></a>
+			</td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>

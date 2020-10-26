@@ -1,0 +1,18 @@
+[
+{
+    "color" : "warning",
+    "textColor": "warning-d2",
+    "chart" : "1000,800,1800,400,1500,1000,1050,1300,2100,1400,1500,1350",
+    "chart1" : "600,1208,1505,1177,1440,1150,1050,1470,2324,1905,2800,3050",
+    "number" : "729,351",
+    "text" : "Page views",
+    "stat-success" : "7.2%"
+} ,
+{
+    "color" : "blue",
+    "progress" : "58",
+    "textColor": "blue",
+    "text" : "Task progress",
+    "content" : ["~ 42% remaining"]
+}
+]

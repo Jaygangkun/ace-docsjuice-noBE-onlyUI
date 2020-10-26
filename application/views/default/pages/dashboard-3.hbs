@@ -1,0 +1,329 @@
+<div class="page-header border-0 pb-2">
+    <h1 class="page-title text-primary-d2 text-150">
+        {{title}}
+        <small class="page-info text-secondary-d2 text-nowrap">
+            <i class="fa fa-angle-double-right text-80"></i>
+            classic dashboard
+        </small>
+    </h1>
+
+    <div class="page-tools d-inline-flex">
+        <button type="button" class="btn btn-light-primary btn-h-primary btn-a-primary border-0 radius-3 py-2 text-600 text-90">
+            <span class="d-none d-sm-inline mr-1">
+                Save
+            </span>
+            <i class="fa fa-save text-110 w-2 h-2"></i>
+        </button>
+
+        <button type="button" class="mx-2px btn btn-light-purple btn-h-purple btn-a-purple border-0 radius-3 py-2 text-90">
+            <i class="fa fa-undo text-110 w-2 h-2"></i>
+        </button>
+
+        <div class="btn-group dropdown dd-backdrop dd-backdrop-none-md">
+			<button type="button" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-90" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fa fa-search text-110 w-2 h-2"></i>
+			</button>
+            
+			<div class="dropdown-menu dropdown-menu-right dropdown-caret dropdown-animated animated-2 dd-slide-up dd-slide-none-md">
+                <div class="dropdown-inner">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+            </div>
+		</div>
+    </div>
+</div>
+
+
+
+<div class="row mt-3">
+    <div class="col-xl-8">
+        <div class="row px-3 px-lg-4">
+            <div class="col-12">
+                <div class="row h-100 mx-n425">
+                    <div class="col-12 col-sm-4 p-0 text-center">
+                        <div class="acard mx-2 h-100 px-2 py-3">
+                            <span class="text-dark-l2">
+                                Earnings
+                            </span>
+
+                            <div class="text-secondary-d3">
+                                <span class="text-150 text-secondary-d1">$</span><span class="text-180">198,450</span>
+                                <span class="text-blue-d1">
+                                    +5%
+                                    <i class="fa fa-caret-up"></i>
+                                </span>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-blue radius-round btn-bold px-4 py-1 mt-45 opacity-1">View Report</button>
+                        </div>
+                    </div><!-- /.col -->
+
+                    {{#each (get "stats2")}}
+                        {{> page/infobox2}}
+                    {{/each}}
+                </div><!-- /.row -->
+            </div>
+
+            <div class="col-12 mt-35">
+                <div class="row h-100 mx-n425">
+                    {{#each (get "stats1")}}
+                     {{> page/infobox}}
+                    {{/each}}
+                </div>
+            </div>
+        </div><!-- /.row -->
+    </div><!-- /.col -->
+
+
+    <!-- traffic sources piechart -->
+    <div class="col-xl-4 mt-4 mt-xl-0">
+        <div class="card acard h-100 overflow-hidden">
+            <div class="card-header border-0 bgc-white card-header-sm">
+                <h6 class="card-title text-dark-m2 pl-25 pt-15 text-110">
+                    Traffic Sources
+                    <br />
+                    <span class="text-85 text-dark-l3">Last 7 days</span>
+                </h6>
+
+                <div class="card-toolbar no-border align-self-start mt-15 mr-1">
+                    <div class="dropdown dd-backdrop dd-backdrop-none-md">
+                        <a class="btn btn-light-secondary border-0 btn-bold btn-xs dropdown-toggle" href="#" role="button" data-toggle="dropdown"  data-display="static" aria-haspopup="true" aria-expanded="false">
+                            This Week
+                            <i class="fa fa-caret-down ml-2"></i>
+                        </a>
+
+                        <div class="dropdown-menu shadow-sm dropdown-menu-right dropdown-caret dropdown-animated dd-slide-up dd-slide-none-md radius-1 brc-secondary-l1"><div class="dropdown-inner">
+                            <a class="dropdown-item active btn btn-a-lighter-blue btn-a-bold mx-1" href="#">This Week</a>
+                            <a class="dropdown-item btn btn-a-lighter-blue text-secondary mx-1" href="#">Last Week</a>
+                            <a class="dropdown-item btn btn-a-lighter-blue text-secondary mx-1" href="#">This Month</a>
+                            <a class="dropdown-item btn btn-a-lighter-blue text-secondary mx-1" href="#">Last Month</a>
+                        </div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body px-0 bgc-white pb-0 flex-grow-1">
+                <div class="d-flex align-items-start justify-content-center align-items-center flex-wrap h-100">
+                    <div class="pos-rel"> 
+                        <div class="position-center text-center text-default-d3 mt-n3">
+                            <span>total</span>
+                            <span class="mt-n1 d-block text-180 text-secondary-d3 text-600">730k</span>
+                        </div>
+
+                        <canvas id="traffic-source-chart" class="pos-rel mb-3" style="height: 170px; width: 170px; max-height: 170px; max-width: 170px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.card -->
+    </div><!-- /.col -->
+
+</div><!-- /.row -->
+
+
+
+
+
+<div class="row pt-3 mt-1 mt-lg-3">
+    <div class="col-lg-5 order-last order-lg-first mt-lg-3">
+        <div class="card border-0">
+            <div class="card-header bg-transparent border-0 pl-1">
+                <h5 class="card-title mb-2 mb-md-0 text-120 text-grey-d3">
+                    <i class="fa fa-star mr-1 text-orange text-90"></i>
+                    Best Sellers
+                </h5>
+
+                <div class="card-toolbar align-self-center">
+					<a href="#" data-action="toggle" class="card-toolbar-btn text-grey text-110"><i class="fa fa-chevron-up"></i></a>                    
+				</div>
+            </div>
+            <div class="card-body p-0 acard overflow-hidden">
+                {{> page/products}}
+            </div>
+        </div>        
+    </div>
+
+
+    <div class="col-lg-7 mb-4 mb-lg-0 mt-3">
+        <div class="card border-0 h-100">
+            <div class="card-header border-0 bgc-transparent pl-1">
+                <h5 class="card-title mb-2 mb-md-0 text-120 text-grey-d3">
+                    <i class="fas fa-chart-line text-primary-m2 mr-1 text-105"></i>
+                    Sale Stats
+                </h5>
+
+                <div class="card-toolbar no-border dd-backdrop dd-backdrop-none-md">
+                    <a href="#" class="btn btn-xs btn-light-secondary border-1 text-600 px-4 radius-round dropdown-toggle" role="button" data-toggle="dropdown"  data-display="static" aria-haspopup="true" aria-expanded="false">
+                        2020
+                    </a>
+
+                    <div class="dropdown-menu shadow-sm dropdown-menu-right dropdown-caret dropdown-animated dd-appear-center dd-slide-none-md radius-1 brc-secondary-l1 px-1 mw-auto">
+                        <div class="dropdown-inner">
+                            <a class="dropdown-item active" href="#">2020</a>
+                            <a class="dropdown-item" href="#">2019</a>
+                            <a class="dropdown-item" href="#">2018</a>
+                        </div>
+                    </div>
+				</div>
+
+                <div class="card-toolbar align-self-center">
+                    <a href="#" data-action="reload" class="card-toolbar-btn text-success-m2 text-100">
+                        <i class="fas fa-sync-alt"></i>
+                    </a>
+				</div>
+            </div>
+
+            <div class="card-body p-0 acard px-1 mx-n1 mx-md-0 h-100 d-flex align-items-center">
+                <div class="mx-n2 px-0 mx-md-0 my-2 w-100">
+                    <canvas id="saleschart" height="105"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="row mt-5 pt-lg-3">
+    <div class="col-12 col-lg-3">
+        <div class="card acard radius-t-0 h-100">
+            <div class="position-tl w-102 border-t-3 brc-primary-tp3 ml-n1px mt-n1px"></div><!-- the blue line on top -->
+            <div class="card-header pb-3 brc-secondary-l3">
+                <h5 class="card-title mb-2 mb-md-0 text-dark-m3">
+                    Transfers
+                </h5>
+
+				<div class="card-toolbar no-border pl-0 pl-md-2">
+					<a href="#" class="btn btn-sm btn-lighter-grey btn-bgc-white btn-h-light-orange btn-a-light-orange text-600 px-2 py-1 radius-round">
+                      <i class="fa fa-arrow-down text-90 mx-1px"></i>
+                    </a>
+				</div>
+            </div>
+
+            <div class="card-body pt-2 pb-1">
+                {{> page/transfers}}
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+        <div class="card acard radius-t-0 h-100">
+            <div class="position-tl w-102 border-t-3 brc-primary-tp3 ml-n1px mt-n1px"></div><!-- the blue line on top -->
+            <div class="card-header brc-secondary-l3 pb-3">
+                <h5 class="card-title mb-2 mb-md-0 text-dark-m3">
+                    Todo List <span class="text-sm">(Sortable)</span>
+                </h5>
+
+				<div class="card-toolbar no-border pl-0 pl-md-2">
+					<a href="#" class="btn btn-sm btn-lighter-grey btn-bgc-white btn-h-light-orange btn-a-light-orange text-600 px-25 radius-round">
+                       View all <i class="fa fa-arrow-right ml-2 text-90"></i>
+                    </a>
+				</div>
+            </div>
+
+			<div class="card-body bg-white p-0 pb-15" >
+                {{> page/tasks}}
+            </div><!-- /.card-body -->
+
+        </div>
+    </div>
+
+
+
+    <div class="col-12 col-lg-5 mt-4 mt-lg-0">
+        <div id="conversations" class="card border-0 shadow-sm h-100">
+            <div class="card-header bgc-primary-d1">
+                <h6 class="card-title text-white font-normal">
+                    <i class="far fa-comment-dots text-130 mr-1"></i>
+                    <span class="text-110">
+                        Conversation
+                    </span>
+                    <span class="text-95 d-block d-sm-inline text-center">
+                        (6 online)
+                    </span>
+                </h6>
+
+                <div class="card-toolbar align-self-center text-white text-90 no-border p-2px">
+                    Jack is typing 
+                    <div class="typing-dots text-160 text-white mx-md-1">
+                        <span class="typing-dot">.</span>
+                        <span class="typing-dot">.</span>
+                        <span class="typing-dot">.</span>
+                    </div>
+				</div>
+
+                <div class="card-toolbar align-self-center">
+                    <a href="#" data-action="reload" class="card-toolbar-btn text-white ">
+                        <i class="fas fa-sync-alt"></i>
+                    </a>
+				</div>
+            </div>
+
+            <div class="card-body border-x-1 brc-primary-l1 p-0">
+                <div class="ace-scroll" data-ace-scroll='{"height": 380, "smooth":true}'>
+                 {{> page/conversation}}
+                </div>
+            </div>
+
+            <div class="card-footer px-25 pt-1px bgc-white border-1 border-t-0 brc-primary-l1 radius-b-2">
+                <div class="mb-0 p-3 ccard brc-grey-l1">
+                    <div class="input-group input-group-fade">
+                        <input id="id-reply" type="text" class="form-control pl-2 border-0 radius-0 shadow-none" placeholder="Write your message ..." />
+                   
+                        <!-- smiley dropdown -->
+                        <div class="btn-group mx-2 dropup">
+                            <button type="button" class="btn btn-xs px-1 border-0 btn-lighter-warning btn-bgc-tp dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa-stack">
+                                    <i class="far fa-smile text-dark-tp5 text-150 fa-stack-1x"></i>
+                                </span>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-right p-1">
+                                <div class="d-flex ">
+                                    <a class="dropdown-item px-25" href="#">
+                                        <span class="fa-stack w-auto">
+                                            <i class="fas fa-circle text-dark fa-stack-1x text-100"></i>
+                                            <i class="fas fa-smile text-warning-m3 text-125 fa-stack-1x pos-rel"></i>
+                                        </span>
+                                    </a>
+
+                                    <a class="dropdown-item px-25" href="#">
+                                        <span class="fa-stack w-auto">
+                                            <i class="fas fa-circle text-dark fa-stack-1x text-100"></i>
+                                            <i class="fas fa-smile-beam text-warning-m3 text-125 fa-stack-1x pos-rel"></i>
+                                        </span>
+                                    </a>
+
+                                    <a class="dropdown-item px-25" href="#">
+                                        <span class="fa-stack w-auto">
+                                            <i class="fas fa-circle text-dark fa-stack-1x text-100"></i>
+                                            <i class="fas fa-smile-wink text-warning-m3 text-125 fa-stack-1x pos-rel"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group-append">
+                            <button class="btn btn-info radius-3px" type="button">
+                                Send
+                                <i class="fa fa-angle-right ml-1"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- /.card-footer -->
+
+        </div><!-- /.card -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+

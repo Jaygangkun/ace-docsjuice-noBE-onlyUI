@@ -1,0 +1,23 @@
+<table class="table table-striped-primary table-borderless border-0">
+    <tbody>
+        <tr></tr><!-- empty row, so that table-stripes start from second row -->
+
+        {{#each (get "members")}}
+        <tr>
+            <td class="text-grey-d2 pl-2 pl-lg-3">
+                {{#if color}}
+                    <span class="mr-2 d-inline-block w-5 h-5 text-center pt-2 radius-round bgc-primary-l2 text-primary-d2 font-bolder text-90">
+                        <span>{{color}}</span>
+                    </span>
+                {{/if}}
+                {{#if avatar}}
+                 <img alt="{{name}}'s avatar" src="assets/image/avatar/{{avatar}}" class="radius-round border-1 p-1px brc-primary-m2 mr-2 w-5 h-5" />
+                {{/if}}
+                {{name}}
+            </td>
+            <td class="text-secondary-m1 text-85 font-bolder">{{role}}</td>
+            <td class="text-grey-m1 text-85">{{location}}</td>                
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

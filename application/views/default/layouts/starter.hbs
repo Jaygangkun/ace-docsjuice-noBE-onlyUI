@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> layout/_commons/_head}}
+  </head>
+
+  <body>
+   <div class="body-container">
+      <div class="main-container">
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar sidebar-fixed expandable sidebar-color sidebar-dark" data-backdrop="true" data-dismiss="true" data-swipe="true">
+         {{> layout/starter/sidebar}}
+
+        </div>
+
+
+        <!-- Main Content (includes Navbar and Page Content) -->
+        <div class="main-content">
+          <!-- Navbar -->
+          {{> layout/starter/navbar}}
+
+
+          <!-- Page Content -->
+          <div class="page-content">
+            {{{body}}}
+          </div>
+
+        </div>
+
+      </div>
+
+   </div>
+
+   {{> layout/_commons/_tail}}
+
+  </body>
+</html>

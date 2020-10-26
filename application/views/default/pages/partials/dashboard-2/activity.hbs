@@ -1,0 +1,25 @@
+{{#each (get "tasks")}}
+    <div class="mb-2 text-grey-m1 text-95">
+        <div class="d-flex align-items-start">
+            {{#if abbr}}
+                <span class="d-inline-block w-5 h-5 text-center pt-2 radius-round mr-2px bgc-primary-l3 text-primary-d1 font-bolder text-90">
+                    <span>{{abbr}}</span>
+                </span>
+            {{else}}
+                <img alt="{{name}}'s avatar" src="assets/image/avatar/{{avatar}}" class="border-2 brc-success-m2 radius-round p-1px w-5 h-5 mr-2px" />
+            {{/if}}
+
+            <div class="mx-2 text-grey-d1">
+                <div class="text-600 text-blue-d1">
+                    {{name}}
+                </div>
+                {{summary}}
+            </div>
+
+            <span class="text-90 text-secondary-m1 ml-auto text-nowrap">
+                {{time}}
+            </span>
+        </div>
+    </div>
+    {{#unless @last}}<hr class="brc-grey-l3" />{{/unless}}
+{{/each}}

@@ -1,0 +1,41 @@
+<div class="col-12 col-sm-4 p-0 pos-rel mt-3 mt-sm-0 pt-0 pt-sm-0 text-center">
+ 
+ <div class="acard h-100 d-flex flex-column mx-2 px-2 py-3">
+	<div class="d-flex text-center">
+		<div class="flex-grow-1 mb-3">
+			{{#if text}}
+				<div class="text-nowrap text-100 text-dark-l2">{{text}}</div>
+			{{/if}}
+
+			{{#if content}}{{! sometimes we have two content texts like in smaller infoboxes, so use a loop }}
+				<div class="text-nowrap text-125 text-secondary-d3">{{#each content}}{{{this}}}{{/each}}</div>
+			{{/if}}
+
+			{{#if number}}
+			<div>
+				<span class="text-170 text-secondary-d3">{{number}}</span>
+				{{#if stat-success}}
+				 <span class="text-blue-d1 text-nowrap">
+					+{{stat-success}}
+					<i class="fa fa-caret-up"></i>
+				 </span>
+				{{/if}}
+			</div>
+			{{/if}}
+		</div>
+	</div>
+
+
+	{{#if progress}}
+	 <div class="align-self-center pos-rel text-{{textColor}}">
+		<canvas class="info-pie" style="width: 150px;" data-percent="{{progress}}"></canvas>
+		<span class="position-center text-600 text-dark-tp4">{{progress}}%</span>
+	 </div>
+
+	{{else if chart}}	 
+	 <div class="align-self-center w-95 text-{{textColor}}">
+		<canvas class="info-chart ml-n15 mt-n2" style="height: 64px; width: 100%;" data-values="[{{chart}}]"></canvas>
+	 </div>
+	{{/if}}
+ </div>
+</div>
