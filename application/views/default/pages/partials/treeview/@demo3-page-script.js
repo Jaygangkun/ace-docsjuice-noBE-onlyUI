@@ -1,4 +1,173 @@
 jQuery(function($) {
+    var pageData = {
+        "pages": [
+            {
+                "pageIndex": "1",
+                "pageLocation": "https://s3.amazon.com/bucketname/image",
+                "docType": "INVOICE",
+                "boxes": [
+                    {
+                        "boxId": "123",
+                        "boxIndex": "1",
+                        "class" : "10",
+                        "boxLoc": "[10,20,40,50]"
+                    },
+                    {
+                        "boxId": "234",
+                        "boxIndex": "2",
+                        "class" : "12",
+                        "boxLoc": "[100,120,170,180]"
+                    },
+                    {
+                        "boxId": "345",
+                        "boxIndex": "3",
+                        "class" : "13",
+                        "boxLoc": "[110,320,180,350]"
+                    },
+                    {
+                        "boxId": "456",
+                        "boxIndex": "4",
+                        "class" : "10",
+                        "boxLoc": "[410,420,540,450]"
+                    }
+                ]
+            },
+            {
+                "pageIndex": "2",
+                "pageLocation": "https://s3.amazon.com/bucketname/image",
+                "docType": "BILL_OF_LADING",
+                "boxes": [
+                    {
+                        "boxId": "123",
+                        "boxIndex": "1",
+                        "class" : "10",
+                        "boxLoc": "[40,50,120,90]"
+                    },
+                    {
+                        "boxId": "234",
+                        "boxIndex": "2",
+                        "class" : "12",
+                        "boxLoc": "[140,150,270,180]"
+                    },
+                    {
+                        "boxId": "345",
+                        "boxIndex": "3",
+                        "class" : "13",
+                        "boxLoc": "[210,320,280,350]"
+                    },
+                    {
+                        "boxId": "456",
+                        "boxIndex": "4",
+                        "class" : "10",
+                        "boxLoc": "[630,600,700,650]"
+                    }
+                ]
+            } ,
+            {
+                "pageIndex": "3",
+                "pageLocation": "https://s3.amazon.com/bucketname/image",
+                "docType": "BILL_OF_LADING",
+                "boxes": [
+                    {
+                        "boxId": "123",
+                        "boxIndex": "1",
+                        "class" : "10",
+                        "boxLoc": "[40,50,120,90]"
+                    },
+                    {
+                        "boxId": "234",
+                        "boxIndex": "2",
+                        "class" : "12",
+                        "boxLoc": "[140,150,270,180]"
+                    },
+                    {
+                        "boxId": "456",
+                        "boxIndex": "4",
+                        "class" : "10",
+                        "boxLoc": "[630,600,700,650]"
+                    }
+                ]
+            } 
+        ]
+    };
+
+    var fileData = [
+        {
+            id: 1,
+            name: 'abc.pdf',
+            icons: {
+                'default': ['<i class="fas fa-file-pdf"></i>', 'text-danger-m1']
+            },
+            children: [
+                {
+                    id: 3,
+                    name: 'p1' ,
+                    icons: {
+                        'default': ['<i class="far fa-file"></i>', 'text-grey'],
+                    }
+                },
+                { 
+                    id: 4,
+                    name: 'p2' ,
+                    icons: {
+                        'default': ['<i class="far fa-file"></i>', 'text-grey'],
+                    }
+                },
+                { 
+                    id: 5,
+                    name: 'p3' ,
+                    icons: {
+                        'default': ['<i class="far fa-file"></i>', 'text-grey'],
+                    }
+                },
+                { 
+                    id: 6,
+                    name: 'p4',
+                    icons: {
+                        'default': ['<i class="far fa-file"></i>', 'text-grey']
+                    },
+                }
+            ]
+        },
+        {
+            id: 7,
+            name: 'document.doc',
+            icons: {
+                'default': ['<i class="fa fa-file-word"></i>', 'text-blue2-m2']
+            },
+            children: [
+                {
+                    id: 8,
+                    name: 'p1',
+                    icons: {
+                        'default': ['<i class="far fa-file"></i>', 'text-grey']
+                    },
+                }
+            ]
+        },
+        {
+            id: 9,
+            name: 'pqr.xlsx',
+            icons: {
+                'default': ['<i class="fa fa-file-excel"></i>', 'text-blue2-m2']
+            },
+            children: [
+                {
+                    id: 10,
+                    name: 'p1',
+                    icons: {
+                        'default': ['<i class="far fa-file"></i>', 'text-grey']
+                    },
+                }
+            ]
+        }
+    ];
+
+    if(localStorage.getItem('uploaded_files') != null){
+        fileData = JSON.parse(localStorage.getItem('uploaded_files'));
+    }
+    console.log('fileData', fileData);
+
     //Select Categories Tree
     var categoryData = [];
 
@@ -8,14 +177,309 @@ jQuery(function($) {
     var layer = new Konva.Layer();
     var width = window.innerWidth;
     var height = window.innerHeight;
+    width = $('#imageviewer').outerWidth();
+    height = $('#imageviewer').outerHeight();
 
     var stage = new Konva.Stage({
         container: 'imageviewer',
         width: width,
         height: height,
     });
-    stage.add(layer);
+    // stage.add(layer);
 
+
+    function drawFileContent(file_layer, file_index, page_index){
+        var pages = fileData[file_index].children;
+        if(page_index < pages.length){
+            var page_thumb_index = page_index + 1;
+            if(page_thumb_index > 4){
+                page_thumb_index = 1;
+            }
+            var imageObj = new Image();
+            imageObj.src = './assets/image/page' + page_thumb_index + '.jpeg';
+            imageObj.onload = function () {
+                // getting x, y
+                var img_width = 60;
+                var img_height = 60;
+                var padding_w = 20;
+                var padding_h = 20;
+                var stage_width = stage.width();
+                var stage_height = stage.height();
+
+                var x = page_index * img_width + padding_w * page_index;
+                var y = 0;
+
+                var h_count = stage_width / (img_width + padding_h);
+                var thumb_img = new Konva.Image({
+                    x: x,
+                    y: y,
+                    image: imageObj,
+                    width: img_width,
+                    height: img_height,
+                    file_index: file_index,
+                    page_index: page_index
+                });
+    
+                // add the shape to the layer
+                file_layer.add(thumb_img);
+                file_layer.batchDraw();
+
+                // thumb_img.on('click', function(evt){
+                //     console.log('click', evt.target);
+                //     var page_index = evt.target.attrs.page_index;
+                //     var file_index = evt.target.attrs.file_index;
+                //     var file_id = fileData[file_index].id;
+                //     var page_id = fileData[file_index].children[page_index].id;
+                //     showPageContent(page_id);
+                // })
+
+                thumb_img.on('mouseover', function() {
+                    document.body.style.cursor = 'pointer';
+                });
+                thumb_img.on('mouseout', function() {
+                    document.body.style.cursor = 'default';
+                });
+
+                thumb_img.on('dblclick', function(evt){
+                    var page_index = evt.target.attrs.page_index;
+                    var file_index = evt.target.attrs.file_index;
+                    var file_id = fileData[file_index].id;
+                    var page_id = fileData[file_index].children[page_index].id;
+                    showPageContent(page_id);
+                })
+
+                drawFileContent(file_layer, file_index, page_index + 1);
+            };
+        }
+        
+    }
+
+    function drawPageContent(page_layer, page_index){
+        console.log('drawPageContent', page_layer, page_index);
+        var page_thumb_index = page_index + 1;
+        if(page_thumb_index > 4){
+            page_thumb_index = 1;
+        }
+        var imageObj = new Image();
+        imageObj.src = './assets/image/page' + page_thumb_index + '.jpeg';
+        imageObj.onload = function () {
+            // getting x, y
+            var img_width = 60;
+            var img_height = 60;
+            var padding_w = 20;
+            var padding_h = 20;
+            var stage_width = stage.width();
+            var stage_height = stage.height();
+
+            var x = page_index * img_width + padding_w * page_index;
+            var y = 0;
+            x = 0;
+
+            var h_count = stage_width / (img_width + padding_h);
+            var bk_img = new Konva.Image({
+                x: x,
+                y: y,
+                image: imageObj,
+                width: stage_width,
+                height: stage_height,
+                page_index: page_index
+            });
+
+            // add the shape to the layer
+            page_layer.add(bk_img);
+
+            var page_box_index = page_index % 3;
+
+            var pageBoxes = pageData.pages[page_box_index].boxes;
+            for(i = 0; i < pageBoxes.length; i++){
+                var boxLoc = JSON.parse(pageBoxes[i]['boxLoc']);
+
+                var box = new Konva.Rect({
+                    x: boxLoc[0],
+                    y: boxLoc[1],
+                    width: boxLoc[2],
+                    height: boxLoc[3],
+                    //fill: '#000000',
+                    //opacity: 0.2,
+                    stroke: 'red',
+                    strokeWidth: 2,
+                    draggable: true,
+                    name: 'rect'
+                });
+                boxes.push(box);
+                page_layer.add(box);
+            }
+            // for (i=0; i < 4; i++) {
+            //     var box = new Konva.Rect({
+            //         x: 50 + 150*i,
+            //         y: 50 + 150*i,
+            //         width: 100,
+            //         height: 50,
+            //         //fill: '#000000',
+            //         //opacity: 0.2,
+            //         stroke: 'black',
+            //         strokeWidth: 1,
+            //         draggable: true,
+            //         name: 'rect'
+            //     });
+            //     boxes.push(box);
+            //     page_layer.add(box);
+    
+            //     // add cursor styling
+            //     // box.on('mouseover', function() {
+            //     //     document.body.style.cursor = 'pointer';
+            //     // });
+            //     // box.on('mouseout', function() {
+            //     //     document.body.style.cursor = 'default';
+            //     // });
+            // }
+
+            var tr = new Konva.Transformer();
+            page_layer.add(tr);
+            // tr.nodes(boxes);
+            // tr.nodes([rect1, rect2]);
+
+            // page_layer.batchDraw();
+            page_layer.draw();
+
+            var selectionRectangle = new Konva.Rect({
+                fill: 'rgba(0,0,255,0.5)',
+            });
+            page_layer.add(selectionRectangle);
+        
+            var x1, y1, x2, y2;
+            stage.on('mousedown touchstart', (e) => {
+                if(!isEdit){
+                    return;
+                }
+                // do nothing if we mousedown on eny shape
+                console.log(e.target);
+                if (e.target !== bk_img) {
+                    return;
+                }
+                x1 = stage.getPointerPosition().x;
+                y1 = stage.getPointerPosition().y;
+                x2 = stage.getPointerPosition().x;
+                y2 = stage.getPointerPosition().y;
+        
+                selectionRectangle.visible(true);
+                selectionRectangle.width(0);
+                selectionRectangle.height(0);
+                page_layer.draw();
+            });
+    
+            stage.on('mousemove touchmove', () => {
+                if(!isEdit){
+                    return;
+                }
+                // no nothing if we didn't start selection
+                if (!selectionRectangle.visible()) {
+                    return;
+                }
+                x2 = stage.getPointerPosition().x;
+                y2 = stage.getPointerPosition().y;
+        
+                selectionRectangle.setAttrs({
+                    x: Math.min(x1, x2),
+                    y: Math.min(y1, y2),
+                    width: Math.abs(x2 - x1),
+                    height: Math.abs(y2 - y1),
+                });
+                page_layer.batchDraw();
+            });
+    
+            stage.on('mouseup touchend', () => {
+                if(!isEdit){
+                    return;
+                }
+                // no nothing if we didn't start selection
+                if (!selectionRectangle.visible()) {
+                    return;
+                }
+                // update visibility in timeout, so we can check it in click event
+                setTimeout(() => {
+                    selectionRectangle.visible(false);
+                    page_layer.batchDraw();
+                });
+        
+                var shapes = stage.find('.rect').toArray();
+                var box = selectionRectangle.getClientRect();
+                var selected = shapes.filter((shape) =>
+                    Konva.Util.haveIntersection(box, shape.getClientRect())
+                );
+                tr.nodes(selected);
+                page_layer.batchDraw();
+            });
+        
+            // clicks should select/deselect shapes
+            stage.on('click tap', function (e) {
+                if(!isEdit){
+                    return;
+                }
+                // if we are selecting with rect, do nothing
+                // if (selectionRectangle.visible()) {
+                //     return;
+                // }
+        
+                // if click on empty area - remove all selections
+                if (e.target === bk_img) {
+                    tr.nodes([]);
+                    page_layer.draw();
+                    return;
+                }
+        
+                // do nothing if clicked NOT on our rectangles
+                if (!e.target.hasName('rect')) {
+                    return;
+                }
+        
+                // do we pressed shift or ctrl?
+                const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
+                const isSelected = tr.nodes().indexOf(e.target) >= 0;
+        
+                if (!metaPressed && !isSelected) {
+                    // if no key pressed and the node is not selected
+                    // select just one
+                    tr.nodes([e.target]);
+                } else if (metaPressed && isSelected) {
+                    // if we pressed keys and node was selected
+                    // we need to remove it from selection:
+                    const nodes = tr.nodes().slice(); // use slice to have new copy of array
+                    // remove node from array
+                    nodes.splice(nodes.indexOf(e.target), 1);
+                    tr.nodes(nodes);
+                } else if (metaPressed && !isSelected) {
+                    // add the node into selection
+                    const nodes = tr.nodes().concat([e.target]);
+                    tr.nodes(nodes);
+                }
+                page_layer.draw();
+            });
+        };
+    }
+
+    // creating file and page layers
+    var file_layers = {};
+    var page_layers = {};
+
+    for(var findex = 0; findex < fileData.length; findex++){
+        var file_layer = new Konva.Layer();
+        var file_id = fileData[findex].id;
+        
+        stage.add(file_layer);
+        file_layers[file_id] = file_layer;
+
+        var pages = fileData[findex].children;
+        for(var pindex = 0; pindex < pages.length; pindex++){
+            var page_id = pages[pindex].id;
+            var page_layer = new Konva.Layer();
+
+            stage.add(page_layer);
+            page_layers[page_id] = page_layer;
+        }
+    }
+
+    console.log('file_layers', file_layers);
     var showBBoxes = function() {
         
         // create shape
@@ -76,18 +540,93 @@ jQuery(function($) {
     var editBtn = $('#editBtn');
     var isEdit = false;
     editBtn.on('click', function(e) {
+        e.preventDefault();
         if (isEdit == false) {
-            editBoxes();
-            layer.draw();
+            // editBoxes();
+            // layer.draw();
             isEdit = true;
             //this.text = 'DONE'
         } else {
-            unEditBoxes();
-            layer.draw();
+            // unEditBoxes();
+            // layer.draw();
             isEdit = false;
             //this.text = 'EDIT'
         }
     });
+
+    var imageObj = new Image();
+    imageObj.onload = function () {
+        var yoda = new Konva.Image({
+            x: 0,
+            y: 0,
+            image: imageObj,
+            width: 100,
+            height: 100,
+        });
+
+        // add the shape to the layer
+        layer.add(yoda);
+        layer.batchDraw();
+    };
+    imageObj.src = './assets/image/page1.jpeg';
+
+    function hideFilesContent(){
+        var file_ids = Object.keys(file_layers);
+        for(var index = 0; index < file_ids.length; index++){
+            file_layers[file_ids[index]].hide();
+        }
+    }
+
+    function hidePagesContent(){
+        var page_ids = Object.keys(page_layers);
+        for(var index = 0; index < page_ids.length; index++){
+            page_layers[page_ids[index]].hide();
+        }
+    }
+    function showFileContent(file_id){
+        
+        hideFilesContent();
+        hidePagesContent();
+
+        // getting file_index
+        var file_index = 0;
+        for(var findex = 0; findex < fileData.length; findex ++){
+            if(file_id == fileData[findex].id){
+                file_index = findex;
+                break;
+            }
+        }
+
+        drawFileContent(file_layers[file_id], file_index, 0);
+
+        file_layers[file_id].show();
+    }
+
+    function showPageContent(page_id){
+
+        console.log('showPageContent', page_id);
+        hideFilesContent();
+        hidePagesContent();
+
+        // getting page_index
+        var page_index = 0;
+        for(var findex = 0; findex < fileData.length; findex ++){
+            var pages = fileData[findex].children;
+            for(var pindex = 0; pindex < pages.length; pindex++){
+                if(page_id == pages[pindex].id){
+                    page_index = pindex;
+                    break;
+                }
+            }
+            
+        }
+
+        drawPageContent(page_layers[page_id], page_index);
+        page_layers[page_id].show();
+
+        const node = fileTree.tree('getNodeById', page_id);
+        fileTree.tree('selectNode', node);
+    }
 
     
     var selectedIcon =
@@ -161,77 +700,7 @@ jQuery(function($) {
 
     //Browse Files Tree
     var fileTree = $('#id-jqtree-files');
-    var fileData = [
-        {
-            id: 1,
-            name: 'abc.pdf',
-            icons: {
-                'default': ['<i class="fas fa-file-pdf"></i>', 'text-danger-m1']
-            },
-            children: [
-                {
-                    id: 3,
-                    name: 'p1' ,
-                    icons: {
-                        'default': ['<i class="far fa-file"></i>', 'text-grey'],
-                    }
-                },
-                { 
-                    id: 4,
-                    name: 'p2' ,
-                    icons: {
-                        'default': ['<i class="far fa-file"></i>', 'text-grey'],
-                    }
-                },
-                { 
-                    id: 5,
-                    name: 'p3' ,
-                    icons: {
-                        'default': ['<i class="far fa-file"></i>', 'text-grey'],
-                    }
-                },
-                { 
-                    id: 6,
-                    name: 'p4',
-                    icons: {
-                        'default': ['<i class="far fa-file"></i>', 'text-grey']
-                    },
-                }
-            ]
-        },
-        {
-            id: 7,
-            name: 'document.doc',
-            icons: {
-                'default': ['<i class="fa fa-file-word"></i>', 'text-blue2-m2']
-            },
-            children: [
-                {
-                    id: 8,
-                    name: 'p1',
-                    icons: {
-                        'default': ['<i class="far fa-file"></i>', 'text-grey']
-                    },
-                }
-            ]
-        },
-        {
-            id: 9,
-            name: 'pqr.xlsx',
-            icons: {
-                'default': ['<i class="fa fa-file-excel"></i>', 'text-blue2-m2']
-            },
-            children: [
-                {
-                    id: 10,
-                    name: 'p1',
-                    icons: {
-                        'default': ['<i class="far fa-file"></i>', 'text-grey']
-                    },
-                }
-            ]
-        }
-    ];
+    
 
     fileTree.tree({
           data: fileData,
@@ -300,12 +769,21 @@ jQuery(function($) {
     fileTree.on('tree.click', function(e) {
         // Disable single selection
         //e.preventDefault();
+        console.log('tree.click', e.node);
 
         if (_lastContextMenu != null ) return;       
         
         
         var selectedNode = e.node;
     
+        if(selectedNode.children.length != 0){
+            console.log('File Click');
+            showFileContent(selectedNode.id);
+        }
+        else{
+            console.log('Page Click');
+            showPageContent(selectedNode.id);
+        }
         if (selectedNode.id === undefined) {
             //console.warn('The multiple selection functions require that nodes have an id');
             return;

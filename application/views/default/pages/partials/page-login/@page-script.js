@@ -46,6 +46,12 @@ jQuery(function($) {
         })
     })
 
+    $('h4').each(function() {
+        var mobileTitle = $(this).parent().next()
+        if (mobileTitle.hasClass('d-lg-none'))
+            mobileTitle.removeClass('d-lg-none').prev().remove()
+    })
+
 
     // make the login area fullscreen
     // if you want a fullscreen login page you should do so in your HTML
