@@ -1,5 +1,7 @@
 jQuery(function($) {
 
+  var files = [];
+
   $('#id-ripple').on('click', function() {
     Waves.attach('.btn:not([class*="btn-light"]):not([class*="btn-h-light"]):not([class*="btn-h-outline"])', ['waves-light'])
     Waves.attach('.btn[class*="btn-h-outline"]:not([class*="btn-a-outline"])', ['waves-light'])
@@ -41,7 +43,8 @@ jQuery(function($) {
     console.log( $(this).data('ace_input_method') )
 
     var ace_input_files = $(this).data('ace_input_files');
-    var files = [];
+    // var files = [];
+    files = [];
     var file_id = 1;
     for(var findex = 0; findex < ace_input_files.length; findex++){
       var icon = {
@@ -66,7 +69,7 @@ jQuery(function($) {
       }
       var children = [];
 
-      var pages = Math.floor(Math.random() * 10) + 1;
+      var pages = Math.floor(Math.random() * 6) + 1;
       var page_id = file_id + 1;
       for(var pindex = 0; pindex < pages; pindex++){
         var page_index = pindex + 1;
@@ -94,6 +97,10 @@ jQuery(function($) {
     localStorage.setItem('uploaded_files', JSON.stringify(files));
     var get_files = JSON.parse(localStorage.getItem('uploaded_files'));
     console.log('get_files', get_files);
+
+    if(localStorage.getItem('doc_type') != null && files.length > 0){
+      $('#btn_continue').removeClass('disabled');
+    }
   })
   .on('invalid.ace.file', function(e, errors) {
     // console.log(errors)
@@ -104,17 +111,22 @@ jQuery(function($) {
   })
   .on('reset.ace.file', function(e) {
     // e.preventDefault()
+    $('#btn_continue').addClass('disabled');
   })
 
   localStorage.removeItem('doc_type');
   $(document).on('click', '#btn_lading', function(){
     localStorage.setItem('doc_type', 'lading');
-    $('#btn_continue').removeClass('disabled');
+    if(files.length > 0){
+      $('#btn_continue').removeClass('disabled');
+    }
   })
 
   $(document).on('click', '#btn_invoice', function(){
     localStorage.setItem('doc_type', 'invoice');
-    $('#btn_continue').removeClass('disabled');
+    if(files.length > 0){
+      $('#btn_continue').removeClass('disabled');
+    }    
   })
 
   

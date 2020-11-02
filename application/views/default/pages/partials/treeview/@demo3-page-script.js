@@ -199,8 +199,8 @@ jQuery(function($) {
             imageObj.src = './assets/image/page' + page_thumb_index + '.jpeg';
             imageObj.onload = function () {
                 // getting x, y
-                var img_width = 60;
-                var img_height = 60;
+                var img_width = 120;
+                var img_height = 120;
                 var padding_w = 20;
                 var padding_h = 20;
                 var stage_width = stage.width();
@@ -240,7 +240,8 @@ jQuery(function($) {
                     document.body.style.cursor = 'default';
                 });
 
-                thumb_img.on('dblclick', function(evt){
+                // thumb_img.on('dblclick', function(evt){
+                thumb_img.on('click', function(evt){
                     var page_index = evt.target.attrs.page_index;
                     var file_index = evt.target.attrs.file_index;
                     var file_id = fileData[file_index].id;
@@ -407,6 +408,7 @@ jQuery(function($) {
                 var selected = shapes.filter((shape) =>
                     Konva.Util.haveIntersection(box, shape.getClientRect())
                 );
+                console.log('selected:', selected);
                 tr.nodes(selected);
                 page_layer.batchDraw();
             });
@@ -538,7 +540,7 @@ jQuery(function($) {
     layer.draw();
 
     var editBtn = $('#editBtn');
-    var isEdit = false;
+    var isEdit = true;
     editBtn.on('click', function(e) {
         e.preventDefault();
         if (isEdit == false) {
@@ -573,14 +575,16 @@ jQuery(function($) {
     function hideFilesContent(){
         var file_ids = Object.keys(file_layers);
         for(var index = 0; index < file_ids.length; index++){
-            file_layers[file_ids[index]].hide();
+            file_layers[file_ids[index]].remove();
+            // file_layers[file_ids[index]].hide();
         }
     }
 
     function hidePagesContent(){
         var page_ids = Object.keys(page_layers);
         for(var index = 0; index < page_ids.length; index++){
-            page_layers[page_ids[index]].hide();
+            page_layers[page_ids[index]].remove();
+            // page_layers[page_ids[index]].hide();
         }
     }
     function showFileContent(file_id){
@@ -597,6 +601,7 @@ jQuery(function($) {
             }
         }
 
+        stage.add(file_layers[file_id]);
         drawFileContent(file_layers[file_id], file_index, 0);
 
         file_layers[file_id].show();
@@ -621,6 +626,7 @@ jQuery(function($) {
             
         }
 
+        stage.add(page_layers[page_id]);
         drawPageContent(page_layers[page_id], page_index);
         page_layers[page_id].show();
 

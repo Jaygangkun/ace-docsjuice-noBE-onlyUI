@@ -1,4 +1,179 @@
 jQuery(function($) {
+
+    function parseJSONToCSVStr(jsonData) {
+    
+        let keys = Object.keys(jsonData);
+    
+        let columnDelimiter = ',';
+        let lineDelimiter = '\n';
+    
+        let csvColumnHeader = keys.join(columnDelimiter);
+        let csvStr = csvColumnHeader + lineDelimiter;
+    
+        keys.forEach((key, index) => {
+            if( (index > 0) && (index < keys.length-1) ) {
+                csvStr += columnDelimiter;
+            }
+            csvStr += jsonData[key];
+        });
+    
+        return encodeURIComponent(csvStr);;
+    }
+
+    function OBJtoXML(obj) {
+        var xml = '';
+        for (var prop in obj) {
+          xml += obj[prop] instanceof Array ? '' : "<" + prop + ">";
+          if (obj[prop] instanceof Array) {
+            for (var array in obj[prop]) {
+              xml += "<" + prop + ">";
+              xml += OBJtoXML(new Object(obj[prop][array]));
+              xml += "</" + prop + ">";
+            }
+          } else if (typeof obj[prop] == "object") {
+            xml += OBJtoXML(new Object(obj[prop]));
+          } else {
+            xml += obj[prop];
+          }
+          xml += obj[prop] instanceof Array ? '' : "</" + prop + ">";
+        }
+        var xml = xml.replace(/<\/?[0-9]{1,}>/g, '');
+        return xml
+    }
+
+    var endScopeObj = {};
+    window.obj2xml = function (obj, opt) {
+        if (!opt) opt = {};
+        var rootName = opt.rootName || 'root';
+        var declaration = opt.declaration === 'auto' ? '<?xml version="1.0" encoding="utf-8"?>' : opt.declaration;
+        var indentation = opt.indentation || 0;
+        var generateDtd = (opt.doctype === 'auto' || opt.doctype === 'generate') && declaration;
+        var useAttributes = opt.attributes === false ? false : true;
+        var scope_indent = 0;
+        if (generateDtd) {
+            var dtdAttr = {};
+            var dtdElem = {};
+        }
+        var ret = [];
+        var tagContent, isArr, curs, _t, _ti, key, innerKey, name, queue = [obj, rootName];
+        while (queue.length > 0) {
+            name = queue.pop();
+            curs = queue.pop();
+            if (generateDtd)
+                dtdElem[name] = dtdElem[name] || {};
+            if (curs === endScopeObj) {
+                scope_indent--;
+                if (indentation > 0) ret.push('\n', ' '.repeat(indentation * scope_indent));
+                ret.push('</', name, '>');
+                continue;
+            }
+            if (typeof curs === 'object') {
+                queue.push(endScopeObj);
+                queue.push(name);
+                tagContent = [name];
+                isArr = Array.isArray(curs);
+                if (isArr && generateDtd) {
+                    dtdElem[name][name + 'Item*'] = true;
+                }
+                for (key in curs) {
+                    if (curs.hasOwnProperty(key)) {
+                        if (isArr) {
+                            queue.push(curs[key]);
+                            queue.push(name + 'Item');
+                        } else if (typeof curs[key] == 'object' || useAttributes === false) {
+                            queue.push(curs[key]);
+                            queue.push(key);
+                            if (generateDtd)
+                                dtdElem[name][key] = true;
+                        } else {
+                            if (generateDtd) {
+                                dtdAttr[name] = dtdAttr[name] || {};
+                                dtdAttr[name][key] = true;
+                            }
+                            tagContent.push(key + '=' + '"' + curs[key] + '"');
+                        }
+                    }
+                }
+                if (indentation > 0) ret.push('\n', ' '.repeat(indentation * scope_indent));
+                ret.push('<', tagContent.join(' '), '>');
+                scope_indent++;
+            } else {
+                if (generateDtd)
+                    dtdElem[name]['#PCDATA'] = true;
+                if (indentation > 0) ret.push('\n', ' '.repeat(indentation * scope_indent));
+                ret.push('<');
+                ret.push(name);
+                ret.push('>');
+                ret.push(curs);
+                ret.push('</');
+                ret.push(name);
+                ret.push('>');
+            }
+        }
+        if (generateDtd) {
+            var dtd = ['<!DOCTYPE ', rootName, ' ['];
+            for (key in dtdAttr) {
+                if (dtdAttr.hasOwnProperty(key)) {
+                    for (innerKey in dtdAttr[key]) {
+                        if (dtdAttr[key].hasOwnProperty(innerKey)) {
+                            if (indentation > 0) dtd.push('\n');
+                            dtd.push('<!ATTLIST ', key, ' ', innerKey, ' CDATA #IMPLIED>');
+                        }
+                    }
+                }
+            }
+            for (key in dtdElem) {
+                if (dtdElem.hasOwnProperty(key)) {
+                    innerKey = null;
+                    _t = ['<!ELEMENT ', key, ' ('];
+                    _ti = [];
+                    for (innerKey in dtdElem[key]) {
+                        if (dtdElem[key].hasOwnProperty(innerKey)) {
+                            _ti.push(innerKey);
+                        }
+                    }
+                    if (indentation > 0) dtd.push('\n');
+                    if (innerKey === null) // no children
+                        dtd.push('<!ELEMENT ', key, ' EMPTY>');
+                    else {
+                        _t.push(_ti.join(', '));
+                        _t.push(')>');
+                        dtd.push.apply(dtd, _t);
+                    }
+                }
+            }
+            dtd.push(']>');
+            ret.unshift.apply(ret, dtd);
+        } else if (declaration)
+            ret.unshift(opt.doctype ? opt.doctype : '<!DOCTYPE ' + rootName + '>');
+        if (declaration) ret.unshift(declaration);
+        return ret.join('');
+    };
+
+    function exportToCsvFile() {
+        // let csvStr = parseJSONToCSVStr(formData);
+        // let csvStr = OBJtoXML(formData);
+        let csvStr = obj2xml(formData);
+        let dataUri = 'data:text/xml;charset=utf-8,'+ csvStr;
+    
+        let exportFileDefaultName = 'data.xml';
+    
+        let linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }
+
+    $(document).on('click', '#btn_export', function(e){
+        e.preventDefault();
+        exportToCsvFile();
+
+    })
+
+    var US_STATES = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+
+    var COUNTRIES = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua & Deps","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Rep","Chad","Chile","China","Colombia","Comoros","Congo","Congo {Democratic Rep}","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland {Republic}","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar, {Burma}","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russian Federation","Rwanda","St Kitts & Nevis","St Lucia","Saint Vincent & the Grenadines","Samoa","San Marino","Sao Tome & Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
     var formDataLading = {
         "id": "123",
         "bolNumber": "MAEU4563210425",
@@ -221,6 +396,19 @@ jQuery(function($) {
 		$(table).find('.ui-pg-div').tooltip({container:'body', trigger: 'hover'});
     }
     
+    var country_html = '';
+    for(var index = 0; index < COUNTRIES.length; index++){
+        country_html += '<option>' + COUNTRIES[index] + '</option>';
+    }
+    $('#country').append(country_html);
+
+    var state_html = '';
+    for(var index = 0; index < US_STATES.length; index++){
+        state_html += '<option>' + US_STATES[index] + '</option>';
+    }
+    $('#state').append(state_html);
+
+    $('.autocomplete-dropdown').select2();
     var form_keys = Object.keys(formData);
     for(var index = 0; index < form_keys.length; index++){
         var form_label_name = form_keys[index];
@@ -1166,6 +1354,5 @@ var daterange_container = document.querySelector('#id-daterange-container');
         belowNav: true,
         extraClass: 'my-2'
     })
-
     
 });
